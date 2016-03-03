@@ -1,0 +1,303 @@
+;;
+;; This homework is to use impcore to implement basic functions 
+;;
+
+;;
+;;Problem 3
+;;
+;; the function sigma calculate the sum of values from m to n. 
+;;There are three cases: 
+;;1 when m>n, it’s in a false situation, the result is 0 
+;;2 when m=n, we should return the value of m
+;;3 when m<n, add value m to (sigma m n)
+
+(define sigma(m n)
+ (if(> m n) 0
+   (if(= m n) m
+     (+ m (sigma(+ m 1) n)))))
+
+;; define function
+;; if m>n, then return false, return 0
+;; if m=n, then the last number we should add is m
+;; if m<n, then we should add the value m to function sigma  
+;; and return m+1 to continue adding number
+
+(check-expect (sigma 5 3) 0) ;; test the case when m>n>0
+(check-expect (sigma 3 3) 3) ;; test the case when m=n>0
+(check-expect (sigma 3 5) 12) ;; test the case when m<n, m>0,n>0
+(check-expect (sigma -3 -3) -3) ;; test the case when m=n<0
+(check-expect (sigma -5 -3) -12) ;; test the case when m<n<0
+(check-expect (sigma -3 -5) 0) ;; test the case when m<0,n<0, m>n
+(check-expect (sigma -1 2) 2) ;; test the case when m<0,n>0,m<n
+
+;;
+;;Problem 4
+;;
+;;exp calculate m^n
+
+(define exp(m n)
+  (if (<= n 0) 1 
+   (* m (exp m (- n 1)))))
+   
+;;define function
+;;if n<=0, then return 1
+;;if n>0, we multiply exp by m, and subtract n by 1 to continue multiplication
+
+(check-expect (exp 2 3) 8) ;; test the case when m=2, n=3, m>0, n>0
+(check-expect (exp -2 3) -8) ;; test the case when m<0, n>0
+(check-expect (exp 5 -3) 1) ;; test the case when m>0, n<0, the result should be false
+(check-expect (exp -2 -3) 1) ;; test the case when m<0, n<0, the result should be false
+
+;;log calculate the least integer l such that m^(l+1)>n
+
+(define log(m n)
+ (if (< m 1) 0
+  (if (< n 0) 0
+   (if (< n m) 0
+    (+ 1 (log m (/ n m)))))))
+
+;;define function
+;;for valid input, m>1, else return false, 0
+;;for valid input, n>0, else return false, 0
+;;for valid input, m<n, else return false, 0
+;;l equals to 1+(log m* (n/m)), whenever m is smaller than new n, we add 1
+
+(check-expect (log 9 81) 2) ;; test the case when m=9, n=81, n = m^2, l = 2
+(check-expect (log 9 90) 2) ;; test the case when m=9, n=90, m^2 < n < m^3, l = 2
+(check-expect (log 9 80) 1) ;; test the case when m=9, n=80, m < n < m^2 , l = 1
+(check-expect (log -1 81) 0) ;; test the case when m<0, the result should be 0
+
+;;
+;;Problem 5
+;;
+
+;;(choose n k) calculates number of ways to select k items from n items
+;;There are two special occasions, (choose n 0)=1, (choose n n)=1
+;;Otherwise, (choose n k)= (choose n-1 k)+(choose n-1 k-1)
+
+(define choose(n k)
+ (if (< n k) 0
+  (if (= k 0) 1
+   (if (= k n) 1
+    (+ (choose (- n 1) k) (choose (- n 1) (- k 1)))))))   
+    
+;;define function
+;;for valid input, n>k, if n<k, return 0
+;;as defined in the problem, (choose n 0)=1
+;;as defined in the problem, (choose n n)=1 
+;;if 0<k<n, as defined in the problem, (choose n k)= (choose n-1 k)+(choose n-1 k-1)
+
+(check-expect (choose 4 2) 6) ;; test the case when n>k>0
+(check-expect (choose 2 4) 0) ;; test the case when n<k
+(check-expect (choose 4 4) 1) ;; test the case when n=k, the result should be 1
+(check-expect (choose 4 0) 1) ;; test the case when n>0, k = 0, the result should be 1
+
+;;
+;;Problem 6
+;;
+
+;;(fib m) calculate the mth Fibonacci number.
+;;As defined in the problem, (fib 0) = 0, (fib 1)= 1
+;;for other m>1, (fib m) = (fib (m-1))+(fib (m-2))
+
+(define fib(m)
+ (if (< m 0) 0
+  (if (= m 0) 0
+   (if (= m 1) 1
+    (+ (fib (- m 1)) (fib(- m 2)))))))
+    
+;;define function
+;;if m<0, invalid input, return 0, false
+;;if m=0, as defined in problem, (fib 0) = 0
+;;if m=1, as defined in problem, (fib 1) = 1
+;;if m>1, as defined in problem, (fib m) = (fib (m-1))+(fib (m-2))
+
+(check-expect (fib -1) 0) ;; test the case when m<0, which is false input
+(check-expect (fib 0) 0) ;; test the case when m=0
+(check-expect (fib 1) 1) ;; test the case when m=1
+(check-expect (fib 5) 5) ;; test the case when m>1
+
+;;
+;;Problem 7
+;;
+;;a) function (prime? n) outputs 1 if n is prime, 0 if n is not
+;;we need a  helper function to see if a number can be divided by numbers from 2 to its square root
+;;if it can be divided, then it's not a prime, return 0, if can't, return 1
+
+;;helper function (prime?helper (n divider))
+(define prime?helper (n divider)
+ (if (> (* divider divider) n) 1
+  (if (= (mod n divider) 0) 0 
+   (prime?helper n (+ divider 1)))))
+   
+ ;;define helper function
+ ;;if the square of divider is larger then n, and there's no divider that has remainder of 0, n is prime, return 1
+ ;;if there exist a number that divided by divider has remainder 0, n is not prime, return 0
+ ;;continue to run by adding the value of divider until square root of n
+   
+;;(prime? n)
+(define prime? (n)
+ (if (< n 2) 0
+  (if (= n 2) 1
+   (prime?helper n 2))))
+ 
+;;define function
+;;if n<2, the number is not prime, return 0
+;;if n=2, n is prime, return 1
+;;if n>2, show the result by helper function, if is prime, return 1, if not, return 0
+
+(check-expect (prime? 1) 0) ;; test the case when n<2
+(check-expect (prime? 2) 1) ;; test the case when n=2
+(check-expect (prime? 100) 0) ;; test the case when n is large and is not prime
+(check-expect (prime? 101) 1) ;; test the case when n is large and is prime
+   
+ ;;b) function (nthprime n) return the nth prime number
+ ;;we need a helper function to see the nth prime number
+ ;;since 2 is the only even number that is prime, we count only odd numbers to verify
+ 
+ ;;helper function nthprimehelper(number n)
+ (define nthprimehelper(number n)
+  (if (prime? number)
+    (if (= n 1) number
+      (nthprimehelper (+ number 2) (- n 1)))
+    (nthprimehelper (+ number 2) n)))
+ 
+;;define helper function
+;;if is prime number
+;;if n=1, return 1
+;;if n not equal to 1, and n is prime number, continue count down n until the original number
+;;only check odd number since there's no chance for even number to be prime number except 2
+      
+;;(nthprime n)
+(define nthprime(n)
+ (if (< n 0) 0
+   (if(= n 1) 2
+     (nthprimehelper 3 (- n 1)))))
+ 
+ ;;define function
+ ;;if n<0, the input is invalid return 0
+ ;;if n=1, the first prime number is 2
+ ;;else, start from the 3 and use helper function to output the n th prime number
+ 
+ (check-expect (nthprime 1) 2) ;; test the case when n=1
+ (check-expect (nthprime 2) 3) ;; test the case when n=2
+ (check-expect (nthprime 100) 541) ;; test the case when n is large
+ 
+ ;;c)function (sumprimes n) outputs the sum of the first n primes
+ ;;we can use nthprime combines with sum in problem 3 in dealing with sum to get the result
+ 
+ (define sumprimes(n)
+    (if (< n 1) 0
+     (+ (nthprime n) (sumprimes (- n 1))))) 
+     
+;;define function
+;;if n<1, return 0
+;;else, sum the nth prime number to the 1st prime number
+
+(check-expect (sumprimes 0) 0) ;; test the case when n=0
+(check-expect (sumprimes 1) 2) ;; test the case when n=1
+(check-expect (sumprimes 5) 28) ;; test the case when n is large
+
+;;d) function(relprime? m n) is 1 if m and n have no common divisors except 1, 0 if have
+;;we need a helper function gcd to return the greatest common divisor of two number a and b
+
+;;define helper function (gcd a b)
+(define gcd (a b)
+	(if (= b 0) a
+		(gcd b (mod a b))))
+		
+;;define function
+;;if b=0, return a
+;;if b not equal to 0, b = a*d +r, return gcd(b,r)
+
+;;define function(relprime? m n)
+(define relprime? (m n)
+	(if (= (gcd m n) 1) 1	
+		0))	
+		
+;;define function
+;;if the remainder is 1, then m and n don't have gcd, they are relatively prime
+;;if the remainder is not 1, then they have gcd, they are not relatively prime
+
+(check-expect (relprime? 7 19) 1) ;; test the case when m and n are both prime
+(check-expect (relprime? 9 18) 0) ;; test the case when m and n have gcd not 1
+(check-expect (relprime? 9 19) 1) ;; test the case when m and n are not both prime but is relatively prime
+(check-expect (relprime? 9 64) 1) ;; test the case when m and n are both not prime but is relatively prime
+
+;;
+;;Problem 8
+;;
+;;a)function (given-positive-all-fours?) returns 1 if is all four, and 0 otherwise
+;;we check one digit by digit to see if the remainder divided by 10 is 4
+
+(define given-positive-all-fours? (n)
+  (if (= n 4) 1 
+    (if (< n 10) 0
+      (if (!= (mod n 10) 4 ) 0 
+         (given-positive-all-fours? (/ n 10)))))) 
+;;define function
+;;if n=4, return 1
+;;if n<10 and n is not equal to 4, return 0
+;;else, divide by 10 and see the former digit to verify if the remainder is 4
+
+(check-expect (given-positive-all-fours? 444) 1) ;; test the case when n is in given-positive-all-fours
+(check-expect (given-positive-all-fours? 4) 1) ;; test the case when n is 4
+(check-expect (given-positive-all-fours? 445) 0) ;; test the case when n is not in given-positive-all-fours
+
+;;b)function (all-fours?) returns 1 if its decimal representation is all fours and 0 otherwise
+
+(define all-fours? (n)
+   (if (= n 4) 1 
+    (if (< n 10) 0
+      (if (!= (mod n 10) 4 ) 0 
+        (all-fours? (/ n 10))))))
+;;define function
+;;if n=4, return 1
+;;if n<10 and n is not equal to 4, return 0, including the negative situation
+;;else, divide by 10 and see the former digit to verify if the remainder is 4 
+
+(check-expect (all-fours? 444) 1) ;; test the case when n is in given-positive-all-fours
+(check-expect (all-fours? 4) 1) ;; test the case when n is 4
+(check-expect (all-fours? 445) 0) ;; test the case when n is not in given-positive-all-fours
+(check-expect (all-fours? -444) 0) ;; test the case when n is negative 
+
+;;c)function (all-one-digit?) returns 1 if the number uses just one ten digits, and zero otherwise
+(define all-one-digit? (n)
+   (if (< n 0) (all-one-digit? (- 0 n))
+     (if (< n 10) 1
+       (if (!= (mod n 10) (mod (/ n 10) 10)) 0 
+         (all-one-digit? (/ n 10))))))
+         
+ ;;define function
+ ;;if n is negative, then turn is to positive
+ ;;if n<10, one digit, it's in all-one-digit
+ ;;if not, check if the last digit is the same with the formal digit, if not, return 0
+ ;;continue to check the formal digit
+ 
+ (check-expect (all-one-digit? -4) 1) ;; test the case when n is negative but has only one digit
+ (check-expect (all-one-digit? -43) 0) ;; test the case when n is negative but has not only one digit
+ (check-expect (all-one-digit? 444) 1) ;; test the case when n is positive but has only one digit
+ (check-expect (all-one-digit? 43) 0) ;; test the case when n is positive but has not only one digit
+ 
+ ;;d) function (increasing-digits?) returns 1 if the decimal representation is increasing, 0 if not
+ (define increasing-digits? (n)
+    (if (< n 0) (increasing-digits? (- 0 n))
+      (if (< n 10) 1
+        (if (<= (mod n 10) (mod (/ n 10) 10)) 0 
+          (increasing-digits? (/ n 10))))))
+ 
+ ;;define function
+ ;;if n is negative, turn it into positive
+ ;;if n<10, one digit, it's in increasing-digits
+ ;;if not, check if the last digit is larger than the formal digit, if not, return 0 
+ ;;continue to check the formal digit
+ 
+(check-expect (increasing-digits? -123) 1) ;; test the case when n is negative but has increasing
+(check-expect (increasing-digits? 123) 1) ;; test the case when n is positive but has increasing
+(check-expect (increasing-digits? 1) 1) ;; test the case when n is positive but has increasing
+(check-expect (increasing-digits? -1123) 0) ;; test the case when n is negative but has not increasing
+ (check-expect (increasing-digits? 3123) 0) ;; test the case when n is positive but not increasing
+ 
+ 
+  
+                          
