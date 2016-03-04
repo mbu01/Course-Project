@@ -63,7 +63,7 @@ implements ActionListener, KeyListener
 		this.frame_3 = frame_3;
 	}
 	
-    // Set the timer
+	// Set the timer
 	Timer timer = new Timer (100, new CustomActionListener()); // 100 milliseconds
 
 	public static void main (String [] args)
@@ -72,7 +72,7 @@ implements ActionListener, KeyListener
 	}
 	public Main ()
 	{
-		//Window setup
+		// Window setup
 		setLocation(100,100);
 		setSize (650,650);
 		setDefaultCloseOperation (EXIT_ON_CLOSE);
@@ -80,7 +80,7 @@ implements ActionListener, KeyListener
 		content.setLayout (new BorderLayout());
 		addKeyListener (this);
 	  
-        //Put the panel to choose color from R, G, B
+		// Put the panel to choose color from R, G, B
 	    JPanel scrollBarPanel = new JPanel();
 		scrollBarPanel.setLayout(new GridLayout(3,2));
 		JLabel label1 = new JLabel ("Red:");
@@ -100,14 +100,14 @@ implements ActionListener, KeyListener
 		canvas.getTwo().setCurrentY1(canvas.getTwo().getInit_y());
 		canvas.getThree().setCurrentX1(canvas.getThree().getInit_x());
 		canvas.getThree().setCurrentY1(canvas.getThree().getInit_y());
-	    canvas.getOne().setX1(canvas.getOne().getCurrentX1());
-	    canvas.getOne().setY1(canvas.getOne().getCurrentY1());
-	    canvas.getTwo().setX1(canvas.getTwo().getCurrentX1());
-	    canvas.getTwo().setY1(canvas.getTwo().getCurrentY1());
-	    canvas.getThree().setX1(canvas.getThree().getCurrentX1());
-	    canvas.getThree().setY1(canvas.getThree().getCurrentY1());
+		canvas.getOne().setX1(canvas.getOne().getCurrentX1());
+		canvas.getOne().setY1(canvas.getOne().getCurrentY1());
+		canvas.getTwo().setX1(canvas.getTwo().getCurrentX1());
+		canvas.getTwo().setY1(canvas.getTwo().getCurrentY1());
+		canvas.getThree().setX1(canvas.getThree().getCurrentX1());
+		canvas.getThree().setY1(canvas.getThree().getCurrentY1());
 	    
-	    // Set the layout of the canvas
+		// Set the layout of the canvas
 		JPanel controls = new JPanel();
 		controls.setLayout(new FlowLayout());
 		JPanel button_control = new JPanel();
@@ -157,13 +157,13 @@ implements ActionListener, KeyListener
 				canvas.getTwo().setCurrentY1(canvas.getTwo().getInit_y());
 				canvas.getThree().setCurrentX1(canvas.getThree().getInit_x());
 				canvas.getThree().setCurrentY1(canvas.getThree().getInit_y());
-			    canvas.getOne().setX1(canvas.getOne().getCurrentX1());
-			    canvas.getOne().setY1(canvas.getOne().getCurrentY1());
-			    canvas.getTwo().setX1(canvas.getTwo().getCurrentX1());
-			    canvas.getTwo().setY1(canvas.getTwo().getCurrentY1());
-			    canvas.getThree().setX1(canvas.getThree().getCurrentX1());
-			    canvas.getThree().setY1(canvas.getThree().getCurrentY1());
-			    state.getFlightNumber().setText("2");
+				canvas.getOne().setX1(canvas.getOne().getCurrentX1());
+				canvas.getOne().setY1(canvas.getOne().getCurrentY1());
+				canvas.getTwo().setX1(canvas.getTwo().getCurrentX1());
+				canvas.getTwo().setY1(canvas.getTwo().getCurrentY1());
+				canvas.getThree().setX1(canvas.getThree().getCurrentX1());
+				canvas.getThree().setY1(canvas.getThree().getCurrentY1());
+				state.getFlightNumber().setText("2");
 				state.getScoreNumber().setText("0");
 				zoomFrame = 0;
 				timer.stop();
@@ -172,8 +172,8 @@ implements ActionListener, KeyListener
 				if(zoom)
 				{
 					zoomCanvas.setInit_Plane1(new Point(canvas.getOne().getInit_x(), canvas.getOne().getInit_y()));
-                    zoomCanvas.setInit_Plane2(new Point(canvas.getTwo().getInit_x(), canvas.getTwo().getInit_y()));
-                    zoomCanvas.setInit_Plane3(new Point(canvas.getThree().getInit_x(), canvas.getThree().getInit_y()));
+					zoomCanvas.setInit_Plane2(new Point(canvas.getTwo().getInit_x(), canvas.getTwo().getInit_y()));
+					zoomCanvas.setInit_Plane3(new Point(canvas.getThree().getInit_x(), canvas.getThree().getInit_y()));
 					zoomCanvas.repaint();	
 				}
 		}});
