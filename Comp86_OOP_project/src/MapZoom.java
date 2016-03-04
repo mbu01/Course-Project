@@ -88,7 +88,8 @@ public class MapZoom extends JComponent implements MouseListener
 
 		// Set the location for planes on canvasZoom
 		if(parent.zoom)
-		{
+		{	
+			// If there's a collision in the don't enter area, "boom" sound pop up
 			if(parent.canvas.checkCollisionsGDArea() == true )
 			{
 				parent.canvas.p1Disappear = true;
@@ -102,6 +103,8 @@ public class MapZoom extends JComponent implements MouseListener
 				parent.timer.stop();
 				JOptionPane.showMessageDialog(parent,"You fail!");
 			}
+			
+			// If there's a collision in the mountain area, "boom" sound pop up
 			else if(parent.canvas.checkCollisionsMTArea() == true )
 			{
 				parent.canvas.p1Disappear = true;
@@ -115,6 +118,8 @@ public class MapZoom extends JComponent implements MouseListener
 				parent.timer.stop();
 				JOptionPane.showMessageDialog(parent,"You fail!");
 			}
+			
+			// If collision between plane1, plane2, delete plane2
 			if(parent.canvas.checkCollisions12() == true && parent.canvas.checkCollisions13() == false && parent.canvas.checkCollisions23() == false) 
 			{
 				parent.canvas.p2Disappear = true;

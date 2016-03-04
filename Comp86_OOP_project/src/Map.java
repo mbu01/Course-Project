@@ -75,7 +75,8 @@ public class Map extends JComponent implements MouseListener
 			g.fillRect(280, 320, 100, 50);
 			g.setColor(new Color (red, green, blue));
 			g.drawString("MOUNTAIN",300, 345);
-			// If collision between plane1, plane2, delete plane2
+			
+			// If there's a collision in the don't enter area, "boom" sound pop up
 			if(checkCollisionsGDArea() == true )
 			{
 				p1Disappear = true;
@@ -88,6 +89,8 @@ public class Map extends JComponent implements MouseListener
 				parent.timer.stop();
 				JOptionPane.showMessageDialog(parent,"You fail!");
 			}
+			
+			// If there's a collision in the mountain area, "boom" sound pop up
 			else if(checkCollisionsMTArea() == true )
 			{
 				p1Disappear = true;
@@ -100,6 +103,8 @@ public class Map extends JComponent implements MouseListener
 				parent.timer.stop();
 				JOptionPane.showMessageDialog(parent,"You fail!");
 			}
+			
+			// If collision between plane1, plane2, delete plane2
 			if(checkCollisions12() == true && checkCollisions13() == false && checkCollisions23() == false)
 			{
 				p2Disappear = true;
@@ -125,6 +130,7 @@ public class Map extends JComponent implements MouseListener
 					JOptionPane.showMessageDialog(parent,"You win!");
 				}
 			}
+			
 			// If collision between plane1, plane3, delete plane3
 			else if(checkCollisions12() == false && checkCollisions13() == true && checkCollisions23() == false) 
 			{
@@ -151,6 +157,7 @@ public class Map extends JComponent implements MouseListener
 					JOptionPane.showMessageDialog(parent,"You win!");
 			   }
 			}
+			
 			// If collision between plane2, plane3, delete plane2
 			else if(checkCollisions12() == false && checkCollisions13() == false && checkCollisions23() == true)
 			{
