@@ -1,6 +1,7 @@
 # __author__ = 'bumin'
-#This project is a simple version of plane interface implement by python
-#The user can change the speed of each rectangle
+#This project is a simplified version of plane interface implement by python
+#There are three planes in the interface, the user can change the speed of all the planes
+#Also, the user can use the start/stop buton to control the planes
 
 try:
     import tkinter
@@ -13,24 +14,26 @@ except ImportError:
 ############################################################
 
 class MyCanvas(tkinter.Canvas):
+    
+    # Set initial stuff
     def __init__(self, parent):
         tkinter.Canvas.__init__(self, parent)
-        # Set our stuff
         self["background"] = "grey"
-        # self.bind('<Button-1>', self._myCallback)
 
         self.pack(fill="both", expand=1)
         self._planes = list()
 
-    # add planes
+    # Add planes
     def addPlane(self, Plane):
         self._planes.append(Plane)
 
+    # Draw the position of plane after each tick
     def draw(self):
         print ("\nAnimating:")
         for p in self._planes:
             p.tick()
 
+    # The controller to change the speed of the plane
     def change(self):
         for p in self._planes:
             p.changeSpeed(scrollbar.get())
@@ -40,6 +43,8 @@ class MyCanvas(tkinter.Canvas):
 ############################################################
 
 class Plane():
+
+    # Set initial position for planes
     def __init__(self, x, y, dx, dy, speed):
         # Stash args as ivars
         self._x = x
@@ -58,12 +63,12 @@ class Plane():
         # Bind callback
         map.tag_bind(self._shape, '<Button-1>', self._onclick)
 
-        # Mouse callback for this particular plane
-
+    # Mouse callback for this particular plane
     def _onclick(self, event):
         # Change its color to black
         map.itemconfigure(self._shape, fill="black")
 
+    # Degine the moving pattern for the plane
     def tick(self):
         self._x += self._dx + self._speed
         self._y += self._dy + self._speed
@@ -71,6 +76,7 @@ class Plane():
         print(self._x)
         map.coords(self._shape, self._x, self._y, self._x + 30, self._y + 20)
 
+    # The control button to change the speed of the plane
     def changeSpeed(self, speed):
         self._speed = speed;
 
@@ -89,6 +95,8 @@ class ReversePlane(Plane):
 ############################################################
 # BUTTON CLASS
 ############################################################
+
+# The stop button
 class StopButton(tkinter.Button):
     def __init__(self, label, parent):
         tkinter.Button.__init__(self, parent)
@@ -100,7 +108,7 @@ class StopButton(tkinter.Button):
         start.set(False)
         print (self["text"], "was pushed")
 
-
+# The start button
 class StartButton(tkinter.Button):
     def __init__(self, label, parent):
         tkinter.Button.__init__(self, parent)
@@ -119,10 +127,11 @@ class StartButton(tkinter.Button):
 
 # Main window
 top = tkinter.Tk()
-# start and stop button control
+# Start and stop button control
 start = tkinter.BooleanVar()
 start.set(True)
 
+# Create new canvas
 map = MyCanvas(top)
 b1 = StartButton("Start", top)
 b1.pack(side="left")
@@ -140,6 +149,7 @@ map.addPlane(ReversePlane(200, 120, 2, 1, 1))
 controlPanel = tkinter.Frame(top, borderwidth=2, background="lightblue")
 controlPanel.pack(side="top")
 
+# Define the clock
 def tick():
     if start.get():
         map.change()
