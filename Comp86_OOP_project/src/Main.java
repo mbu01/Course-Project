@@ -38,8 +38,8 @@ implements ActionListener, KeyListener
 		return zoomFrame;
 	}
     
-	public void setZoom(boolean zoom) 
-	{
+    public void setZoom(boolean zoom) 
+    {
 		this.zoom = zoom;
 	}
 	
@@ -81,7 +81,7 @@ implements ActionListener, KeyListener
 		addKeyListener (this);
 	  
 		// Put the panel to choose color from R, G, B
-	    JPanel scrollBarPanel = new JPanel();
+		JPanel scrollBarPanel = new JPanel();
 		scrollBarPanel.setLayout(new GridLayout(3,2));
 		JLabel label1 = new JLabel ("Red:");
 		scrollBarPanel.add(label1);
